@@ -58,7 +58,8 @@ int main(int argc, char *argv[])
         }
         end = omp_get_wtime();
         total_time = end - start;
-        printf("Parallel process takes %f seconds to execute\n", total_time);
+        printf("%lld,%d,%f\n", array_size, thread_count, total_time);
+        // printf("Parallel process takes %f seconds to execute\n", total_time);
     }
     else
     { // Run serial merge sort
@@ -66,7 +67,9 @@ int main(int argc, char *argv[])
         serial_mergeSort(array, 0, array_size - 1);
         end = ((double)clock()) / CLOCKS_PER_SEC;
         total_time = end - start;
-        printf("Serial process takes %f seconds to execute\n", total_time);
+
+        printf("%lld,serial,%f\n", array_size, total_time);
+        // printf("Serial process takes %f seconds to execute\n", total_time);
     }
 
     return EXIT_SUCCESS;
