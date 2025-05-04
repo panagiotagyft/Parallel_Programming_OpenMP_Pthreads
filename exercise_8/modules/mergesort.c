@@ -7,13 +7,16 @@
 #include <omp.h>
 #endif
 
+// Function to merge two sorted subarrays into one sorted arra
 void merge(int *array, int left, int middle, int right)
 {
     int i, j, l, s1, s2;
 
+    // Calculate sizes of the two subarrays
     s1 = middle - left + 1;
     s2 = right - middle;
 
+    // Allocate auxiliary array to hold the merged elements
     int *auxiliary_array = malloc((s1 + s2) * sizeof(int));
     if (auxiliary_array == NULL)
     {
@@ -21,7 +24,7 @@ void merge(int *array, int left, int middle, int right)
         exit(EXIT_FAILURE);
     }
 
-    // Copy data to temp arrays L[] and R[]
+    // Copy data to the auxiliary array: first left subarray, then right subarray
     for (i = 0; i < s1 + s2; i++)
     {
         if (i < s1)
@@ -33,7 +36,7 @@ void merge(int *array, int left, int middle, int right)
         auxiliary_array[i] = array[middle + 1 + (i - s1)];
     }
 
-    // Merge the temp arrays back into arr[l..r
+    // Merge the two subarrays back into the original array
     i = 0;
     j = s1;
     l = left;
@@ -48,20 +51,21 @@ void merge(int *array, int left, int middle, int right)
         array[l++] = auxiliary_array[i++];
     }
 
-    // Copy the remaining elements of L[],
-    // if there are any
+    // -- Copy any remaining elements from the left & right subarray --
     while (i < s1)
         array[l++] = auxiliary_array[i++];
 
     while (j < (s1 + s2))
         array[l++] = auxiliary_array[j++];
+    
+    // -- 
 
     free(auxiliary_array);
 
     return;
 }
 
-
+// Recursive serial merge sort function
 void serial_mergeSort(int *array, int left, int right)
 {
     if (left == right)
@@ -75,8 +79,7 @@ void serial_mergeSort(int *array, int left, int right)
     merge(array, left, middle, right);
 }
 
-// l is for left index and r is right index of the
-// sub-array of arr to be sorted
+// Recursive parallel merge sort using OpenMP
 void parallel_mergeSort(int *array, int left, int right)
 {
     if (left == right)
@@ -84,6 +87,7 @@ void parallel_mergeSort(int *array, int left, int right)
 
     int middle = left + ((right - left) >> 1);
 
+    // Create parallel tasks only if the array size is large enough 10^6
 #pragma omp task shared(array) if (right - left > 1000000)
     parallel_mergeSort(array, left, middle);
 
