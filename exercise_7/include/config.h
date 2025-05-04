@@ -1,0 +1,13 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#include <stdio.h>
+#include <stdbool.h>
+
+// Helper function to check if a string is a number (contains only digits)
+bool isnumber(const char *);
+
+// Function to configure program parameters based on command-line arguments
+void config(int, char **, int *, int *, int *, long int *);
+
+#endif // CONFIG_H
