@@ -7,7 +7,5 @@ run:
 clean: 
 	$(MAKE) -C src clean
 
-valgrind: val_program val_tests
-
-val_program:
+valgrind:
 	$(MAKE) -C src valgrind

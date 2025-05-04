@@ -26,10 +26,10 @@ int main(int argc, char *argv[])
     // Read configuration from command-line arguments
     config(argc, argv, &parallel_impl, &row_or_col, &thread_count, &n);
     
-    printf("%d\n", parallel_impl);
-    printf("%d\n", row_or_col);
-    printf("%d\n", thread_count);
-    printf("%ld\n", n);
+    // printf("%d\n", parallel_impl);
+    // printf("%d\n", row_or_col);
+    // printf("%d\n", thread_count);
+    // printf("%ld\n", n);
 
     // Allocate memory for matrix A and vectors b, x
     A = calloc(n, sizeof(double *));
@@ -78,46 +78,34 @@ int main(int argc, char *argv[])
 
     if(parallel_impl == 0)
     { // Serial execution
-        printf("serial\n");
+
         start = ((double)clock()) / CLOCKS_PER_SEC;
         if (row_or_col == 0)
-        {
-            printf("row\n");
             row_wise_elimination(A, b, x, n);
-        }
         else
-        {
-            printf("column\n");
             column_wise_elimination(A, b, x, n);
-        }
+        
         end = ((double)clock()) / CLOCKS_PER_SEC;
         total_time = end - start;
-        printf("Serial process takes %f seconds to execute\n", total_time);
+        printf("%ld,serial,%s,%f\n", n, row_or_col == 0 ? "row wise" : "column wise", total_time);
+
+        // printf("Serial process takes %f seconds to execute\n", total_time);
     }
     else
     { // Parallel execution
-        printf("parallel\n");
+      
         start = omp_get_wtime();
         if (row_or_col == 0)
-        {
-            printf("row\n");
             parallel_row_wise_elimination(A, b, x, n, thread_count);
-        }
         else
-        {
-            printf("column\n");
             parallel_column_wise_elimination(A, b, x, n, thread_count);
-        }
+
         end = omp_get_wtime();
         total_time = end - start;
-        printf("Parallel process takes %f seconds to execute\n", total_time);
-    }
 
-    // for (int j = 0; j < n; j++)
-    // {
-    //     printf("%f\t", x[j]);
-    // }
-    // printf("\n");
+        printf("%ld,%d,%s,%f\n", n, thread_count, row_or_col == 0 ? "row wise" : "column wise", total_time);
+        // printf("Parallel process takes %f seconds to execute\n", total_time);
+    }
 
     for (j = 0; j < n; j++)
         free(A[j]);
