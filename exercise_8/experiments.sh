@@ -17,13 +17,13 @@ for ((n=10000000; n<=100000000; n+=10000000)); do
     # Σειριακή εκτέλεση (1 thread)
     
     echo "Running serial array_size=$n"
-    line=$($EXEC $n 0 $layout 1)
+    line=$($EXEC $n 0 1)
     echo "$line" >> "$OUTFILE"
 
     # Παράλληλη εκτέλεση
     for threads in 2 4 6 8; do
         echo "Running parallel array_size=$n threads=$threads"
-        line=$($EXEC $n 1 $layout $threads)
+        line=$($EXEC $n 1 $threads)
         echo "$line" >> "$OUTFILE"
     done
 done
