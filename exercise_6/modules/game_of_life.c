@@ -48,7 +48,7 @@ int count_neighbors(int **grid, int n, int i, int j)
 void gameInitialization(int n, int **grid, int **next_grid)
 {
     int live_cells = n + rand() % (n * n - n + 1);
-    printf("test %d\n", live_cells);
+
     for (int cell = 0; cell < live_cells;)
     {
         int i = rand() % n;
