@@ -3,14 +3,14 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
+#include <stdbool.h>
 #include <string.h>
 #include <signal.h>
 #include "mutual_exclution.h"
 
 
-int thread_count, iterations;
 pthread_mutex_t Mutex = PTHREAD_MUTEX_INITIALIZER;
-long shared_var = 0;
+int shared_var;
 static pthread_t *worker_threads = NULL;
 
 void handle_sigint_mutex(void)
@@ -24,13 +24,10 @@ void handle_sigint_mutex(void)
 }
 
 // Thread function that performs work with mutex-protected counter
-void *culc_sum(void *rank)
+void *culc_sum(void *arg)
 {
-    (void)rank;
-    // long my_rank = (long)rank;
-    // printf("Thread %ld is running (Threads=%d).\n", my_rank+1, thread_count);
-
-    for (int i = 0; i < iterations; i++)
+    intptr_t iters = (intptr_t)arg;
+    for (intptr_t i = 0; i < iters; i++)
     {
         if (pthread_mutex_lock(&Mutex) != 0)
         {
@@ -47,12 +44,18 @@ void *culc_sum(void *rank)
     pthread_exit(NULL);
 }
 
-void mutual_exclution(int threads, int num_of_iterations)
+void mutual_exclution(int thread_count, int iterations, int var)
 {
     double total_time, start, end;
+    intptr_t iters;
+    shared_var = var;
+    int flag_remainder = true;
 
-    thread_count = threads;
-    iterations = num_of_iterations;
+    int remainder = iterations % thread_count;
+    if (remainder == 0)
+    {
+        flag_remainder = false;
+    }
 
     // Allocate memory for thread handles
     if ((worker_threads = malloc(thread_count * sizeof(pthread_t))) == NULL)
@@ -66,7 +69,16 @@ void mutual_exclution(int threads, int num_of_iterations)
     // Create threads
     for (long thread = 0; thread < thread_count; thread++)
     {
-        int error = pthread_create(&worker_threads[thread], NULL, culc_sum, (void *)thread);
+        if (flag_remainder == true)
+        {
+            iters = (intptr_t)(iterations / thread_count) + remainder;
+            flag_remainder = false;
+        }
+        else
+        {
+            iters = (intptr_t)(iterations / thread_count);
+        }
+        int error = pthread_create(&worker_threads[thread], NULL, culc_sum, (void *)iters);
         if (error != 0)
         {
             fprintf(stderr, "ERROR: pthread_create() failed: %s\n", strerror(error));

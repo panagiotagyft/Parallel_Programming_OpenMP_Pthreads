@@ -6,10 +6,11 @@
 #include <time.h>
 #include <string.h>
 #include <signal.h>
+#include <stdbool.h>
+#include <stdint.h> // for intptr_t
 #include "atomic_operations.h"
 
-static int thread_count, iterations;
-static long shared_var = 0;
+static int shared_var = 0;
 static pthread_t *worker_threads = NULL;
 
 void handle_sigint_atomic()
@@ -21,25 +22,28 @@ void handle_sigint_atomic()
 }
 
 // Thread function that performs work with mutex-protected counter
-static void *culc_sum_atomic(void *rank)
+static void *culc_sum_atomic(void *arg)
 {
-    // long my_rank = (long)rank;
-    (void)rank;
-    // printf("A.Thread %ld is running (Threads=%d).\n", my_rank + 1, thread_count);
-
-    for (int i = 0; i < iterations; i++)
+    intptr_t iters = (intptr_t)arg;
+    for (intptr_t i = 0; i < iters; i++)
     {
         __atomic_fetch_add(&shared_var, 1, __ATOMIC_SEQ_CST);
     }
     pthread_exit(NULL);
 }
 
-void atomic_operations(int threads, int num_of_iterations)
+void atomic_operations(int thread_count, int iterations, int var)
 {
-    double total_time, start, end;
 
-    thread_count = threads;
-    iterations = num_of_iterations;
+    double total_time, start, end;
+    intptr_t iters;
+    shared_var = var;
+    int flag_remainder = true;
+    int remainder = iterations % thread_count;
+    if (remainder == 0)
+    {
+        flag_remainder = false;
+    }
 
     // Allocate memory for thread handles
     if ((worker_threads = malloc(thread_count * sizeof(pthread_t))) == NULL)
@@ -53,7 +57,16 @@ void atomic_operations(int threads, int num_of_iterations)
     // Create threads
     for (long thread = 0; thread < thread_count; thread++)
     {
-        int error = pthread_create(&worker_threads[thread], NULL, culc_sum_atomic, (void *)thread);
+        if (flag_remainder == true)
+        {
+            iters = (intptr_t)(iterations / thread_count) + remainder;
+            flag_remainder = false;
+        }
+        else
+        {
+            iters = (intptr_t)(iterations / thread_count);
+        }
+        int error = pthread_create(&worker_threads[thread], NULL, culc_sum_atomic, (void *)iters);
         if (error != 0)
         {
             fprintf(stderr, "ERROR: pthread_create() failed: %s\n", strerror(error));
@@ -74,5 +87,4 @@ void atomic_operations(int threads, int num_of_iterations)
 
     // Free memory and destroy mutex
     free(worker_threads);
-
 }

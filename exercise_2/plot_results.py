@@ -31,6 +31,5 @@ for iterations, group in iteration_groups:
     plt.ylabel("Time (seconds)")
     plt.legend()
     plt.grid(True)
-    plt.tight_layout()
     plt.savefig(f"{output_dir}/plot_iterations_{iterations}.png")
-    plt.show()
+    plt.close()

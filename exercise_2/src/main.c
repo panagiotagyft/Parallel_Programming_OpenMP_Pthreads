@@ -40,10 +40,10 @@ int main(int argc, char *argv[])
     config(argc, argv, &iterations, &thread_count);
 
     // printf(">>> Starting mutual_exclution...\n");
-    mutual_exclution(thread_count, iterations);
+    mutual_exclution(thread_count, iterations, 0);
     // printf(">>> Starting atomic_operations...\n");
     flag = 1;
-    atomic_operations(thread_count, iterations);
+    atomic_operations(thread_count, iterations, 0);
 
     return EXIT_SUCCESS;
 }
