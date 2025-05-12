@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
     // printf(">>> Starting mutual_exclution...\n");
     pthread_barrier(thread_count, iterations);
     // printf(">>> Starting atomic_operations...\n");
-
     condition_barrier(thread_count, iterations);
 
     spin_barrier(thread_count, iterations);
