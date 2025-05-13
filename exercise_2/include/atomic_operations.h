@@ -7,6 +7,8 @@
 // variable while using locks to avoid race conditions.
 void atomic_operations(int, int, int);
 
+void *culc_sum_atomic(void *arg);
+
 void handle_sigint_atomic(void);
 
 #endif // ATOMIC_OPERATIONS_H

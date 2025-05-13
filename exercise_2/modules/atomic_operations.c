@@ -21,12 +21,13 @@ void handle_sigint_atomic()
         free(worker_threads);
 }
 
-// Thread function that performs work with mutex-protected counter
-static void *culc_sum_atomic(void *arg)
+// Worker thread function: performs atomic increments
+void *culc_sum_atomic(void *arg)
 {
     intptr_t iters = (intptr_t)arg;
     for (intptr_t i = 0; i < iters; i++)
     {
+        // Atomically increment shared_var with sequential consistency
         __atomic_fetch_add(&shared_var, 1, __ATOMIC_SEQ_CST);
     }
     pthread_exit(NULL);
@@ -37,7 +38,11 @@ void atomic_operations(int thread_count, int iterations, int var)
 
     double total_time, start, end;
     intptr_t iters;
+    
+    // Initialize the shared variable to the given starting value
     shared_var = var;
+
+    // Determine if there is a remainder when dividing work among threads
     int flag_remainder = true;
     int remainder = iterations % thread_count;
     if (remainder == 0)
