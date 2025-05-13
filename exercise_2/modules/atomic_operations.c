@@ -13,8 +13,9 @@
 static int shared_var = 0;
 static pthread_t *worker_threads = NULL;
 
-void handle_sigint_atomic()
+void handle_sigint_atomic(int sig)
 {
+    (void)sig;
     printf("\n[!] Caught Ctrl+C (SIGINT). Cleaning up...\n");
 
     if (worker_threads != NULL)

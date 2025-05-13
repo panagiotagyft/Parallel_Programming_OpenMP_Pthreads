@@ -10,6 +10,6 @@ void * culc_sum(void *);
 // variable while using locks to avoid race conditions.
 void mutual_exclution(int, int, int);
 
-void handle_sigint_mutex(void);
+void handle_sigint_mutex(int);
 
 #endif // MUTUAL_EXCLUTION_H

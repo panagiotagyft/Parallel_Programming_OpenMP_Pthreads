@@ -13,8 +13,9 @@ pthread_mutex_t Mutex = PTHREAD_MUTEX_INITIALIZER;
 int shared_var;
 static pthread_t *worker_threads = NULL;
 
-void handle_sigint_mutex(void)
+void handle_sigint_mutex(int sig)
 {
+    (void)sig;
     printf("\n[!] Caught Ctrl+C (SIGINT). Cleaning up...\n");
 
     if (worker_threads != NULL)

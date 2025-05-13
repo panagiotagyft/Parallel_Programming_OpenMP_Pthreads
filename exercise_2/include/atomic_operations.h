@@ -9,7 +9,7 @@ void atomic_operations(int, int, int);
 
 void *culc_sum_atomic(void *arg);
 
-void handle_sigint_atomic(void);
+void handle_sigint_atomic(int);
 
 #endif // ATOMIC_OPERATIONS_H
 
