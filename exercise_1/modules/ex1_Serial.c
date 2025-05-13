@@ -30,10 +30,11 @@ int serial(long long int num_darts)
         if (squared_dist <= 1)
             arrows++;
     }
+    double pi = 4 * arrows / (double)num_darts;
     end = ((double)clock()) / CLOCKS_PER_SEC;
     total_time = end - start;
 
-    printf("Serial,1,%lld,%lld,%.6f\n", num_darts, arrows, total_time);
+    printf("Serial,1,%lld,%lld,%.6f,%lf\n", num_darts, arrows, total_time, pi);
 
     return EXIT_SUCCESS;
 }

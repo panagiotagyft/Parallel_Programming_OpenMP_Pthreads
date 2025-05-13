@@ -98,10 +98,12 @@ int pthreads_impl(long long int num_darts, int thread_count)
     {
         pthread_join(worker_threads[i], NULL);
     }
-    
+
+    double pi = 4 * arrows / (double)num_darts;
+
     clock_gettime(CLOCK_MONOTONIC, &end);
     total_time = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-    printf("Pthreads,%d,%lld,%lld,%.6f\n", thread_count, num_darts, arrows, total_time);
+    printf("Pthreads,%d,%lld,%lld,%.6f,%lf\n", thread_count, num_darts, arrows, total_time, pi);
 
     // Free memory and destroy mutex
     free(worker_threads);

@@ -12,7 +12,7 @@
 int open_mp(long long int num_darts, int thread_count)
 {
     long long int arrows = 0;
-    double start, end;
+    double start, end, total_time;
 
     // Set the number of threads for the OpenMP parallel region
     omp_set_num_threads(thread_count);
@@ -28,17 +28,19 @@ int open_mp(long long int num_darts, int thread_count)
         for (long long int throw = 0; throw < num_darts; ++throw)
         {
             // Generate a random point (x, y) in the square [-1, 1] x [-1, 1]
-            double x = rand_r(&seed) / RAND_MAX * 2.0 - 1.0;
-            double y = rand_r(&seed) / RAND_MAX * 2.0 - 1.0;
+            double x = (double)rand_r(&seed) / RAND_MAX * 2.0 - 1.0;
+            double y = (double)rand_r(&seed) / RAND_MAX * 2.0 - 1.0;
 
             // Check if the point lies inside the unit circle (x^2 + y^2 <= 1)
             if (x * x + y * y <= 1.0)
                 arrows++;
         }
     } // end parallel
-
+   
     end = omp_get_wtime();
-    printf("OpenMp,%d,%lld,%lld,%.6f\n",thread_count, num_darts, arrows, end - start);
+    total_time = end - start;
+    double pi = 4 * arrows / (double)num_darts;
+    printf("OpenMp,%d,%lld,%lld,%.6f,%lf\n", thread_count, num_darts, arrows, total_time, pi);
 
     return EXIT_SUCCESS;
 }
