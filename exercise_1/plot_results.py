@@ -1,57 +1,59 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import sys
 import os
+import sys
 
-# 1) Φόρτωση CSV & καθάρισμα headers
-df = pd.read_csv(sys.argv[1], skipinitialspace=True)
-df.columns = df.columns.str.strip()
+# Input
+filename = sys.argv[1]
+output_dir = "plots"
+os.makedirs(output_dir, exist_ok=True)
 
-# 2) Φάκελος για τα outputs
-os.makedirs("plots", exist_ok=True)
+# 1) Load the data
+df = pd.read_csv(filename)
 
-# 3) Πάρε τα δεδομένα για την "Serial"
-serial = df[df["Implementation"] == "Serial"].sort_values("num_darts")
+# 2) Split out the series we need
+serial = df[df['Implementation'] == 'Serial']
+openmp = df[df['Implementation'] == 'OpenMp']
+pthreads = df[df['Implementation'] == 'Pthreads']
 
-# 4) Για κάθε μία από τις δύο υλοποιήσεις που θέλεις να συγκρίνεις:
-for impl in ["OpenMp", "Pthreads"]:
-    # φιλτράρω μόνο τις γραμμές της συγκεκριμένης υλοποίησης
-    sub_imp = df[df["Implementation"] == impl]
-    # βρίσκω μοναδικούς αριθμούς threads (π.χ. [2,4,6,8])
-    threads = sorted(sub_imp["threads"].unique())
+# Thread counts to plot
+thread_counts = [1, 2, 4, 6, 8]
 
-    plt.figure(figsize=(8,5))
+# 3) Plot Serial vs OpenMP
+plt.figure()
+for t in thread_counts:
+    if t == 1:
+        sub = serial
+        label = 'Serial'
+    else:
+        sub = openmp[openmp['threads'] == t]
+        label = f'{t} threads'
+    plt.plot(sub['num_darts'], sub['time'], marker='o', label=label)
 
-    # α) πάντα σχεδιάζω πρώτα τη Serial
-    plt.plot(
-        serial["num_darts"],
-        serial["time"],
-        marker="o",
-        linestyle="-",
-        label="Serial"
-    )
+plt.xlabel('num_darts')
+plt.ylabel('time (s)')
+plt.title('Serial vs OpenMP')
+plt.legend()
+plt.grid(True)
+plt.savefig(f'{output_dir}/serial_vs_openmp.png')
+plt.close()
 
-    # β) μετά κάθε σειρά για την impl, σε κάθε threads
-    for t in threads:
-        sub_t = sub_imp[sub_imp["threads"] == t].sort_values("num_darts")
-        plt.plot(
-            sub_t["num_darts"],
-            sub_t["time"],
-            marker="o",
-            linestyle="--",
-            label=f"{impl} ({t} threads)"
-        )
+# 4) Plot Serial vs Pthreads
+plt.figure()
+for t in thread_counts:
+    if t == 1:
+        sub = serial
+        label = 'Serial'
+    else:
+        sub = pthreads[pthreads['threads'] == t]
+        label = f'{t} threads'
+    plt.plot(sub['num_darts'], sub['time'], marker='o', label=label)
 
-    # 5) μορφοποίηση
-    plt.title(f"Serial vs {impl}  – Time vs Number of Darts")
-    plt.xlabel("Number of Darts")
-    plt.ylabel("Time (sec)")
-    plt.xscale("log")                 # λογαριθμική κλίμακα στον άξονα x
-    plt.grid(True, which="both", ls=":")
-    plt.legend()
-    plt.tight_layout()
+plt.xlabel('num_darts')
+plt.ylabel('time (s)')
+plt.title('Serial vs Pthreads')
+plt.legend()
+plt.grid(True)
+plt.savefig(f'{output_dir}/serial_vs_pthreads.png')
+plt.close()
 
-    # 6) αποθήκευση
-    out = impl.lower()
-    plt.savefig(f"plots/serial_vs_{out}.png", dpi=300)
-    plt.close()
