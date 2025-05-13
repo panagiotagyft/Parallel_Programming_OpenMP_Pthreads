@@ -8,7 +8,7 @@
 #include <signal.h>
 #include "mutual_exclution.h"
 
-
+// Global mutex for protecting access to shared_var
 pthread_mutex_t Mutex = PTHREAD_MUTEX_INITIALIZER;
 int shared_var;
 static pthread_t *worker_threads = NULL;
@@ -34,6 +34,7 @@ void *culc_sum(void *arg)
             (void)write(STDOUT_FILENO, "ERROR: pthread_mutex_unlock() failed\n", 37);
             exit(EXIT_FAILURE);
         }
+        // Critical section: increment the shared counter
         shared_var++;
         if (pthread_mutex_unlock(&Mutex) != 0)
         {
