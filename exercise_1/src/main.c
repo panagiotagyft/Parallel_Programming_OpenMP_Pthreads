@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     long long int num_darts;
     int thread_count;
 
-    srand(10);
+    srand(51);
 
     // Parse command-line arguments and set num_darts and thread_count accordingly
     config(argc, argv, &num_darts, &thread_count);
