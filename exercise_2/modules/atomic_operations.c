@@ -38,7 +38,10 @@ void atomic_operations(int thread_count, int iterations, int var)
 
     double total_time, start, end;
     intptr_t iters;
-    
+
+    // Register signal handler for cleanup
+    signal(SIGINT, handle_sigint_atomic);
+
     // Initialize the shared variable to the given starting value
     shared_var = var;
 

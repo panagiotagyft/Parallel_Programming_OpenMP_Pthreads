@@ -52,6 +52,9 @@ void mutual_exclution(int thread_count, int iterations, int var)
     shared_var = var;
     int flag_remainder = true;
 
+    // Register signal handler for cleanup
+    signal(SIGINT, handle_sigint_mutex);
+
     int remainder = iterations % thread_count;
     if (remainder == 0)
     {
