@@ -41,6 +41,8 @@ for iterations, group in iteration_groups:
     plt.grid(True)
 
     # Save the plot as a PNG file, named according to the iterations value
-    plot_filename = f"{output_dir}/plot_iterations_{iterations}.png"
+    if filename == "results2.csv":  plot_filename = f"{output_dir}/plot_iterations_{iterations}_2.png"
+    else: plot_filename = f"{output_dir}/plot_iterations_{iterations}.png"
+
     plt.savefig(plot_filename)
     plt.close()

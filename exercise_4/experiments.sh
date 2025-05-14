@@ -21,7 +21,7 @@ for ((n=100000; n<=1000000; n+=100000)); do
     # (Optional) You could run the serial version here by setting threads=1
 
     # Run the parallel version with different thread counts
-    for threads in 2 4 6 8 10 12; do
+    for threads in 2 4 6 8; do
         echo "Running parallel iterations=$n threads=$threads"
         # Execute the program with the given iteration count and threads,
         # capture its comma‐separated output line, and append it to the CSV
