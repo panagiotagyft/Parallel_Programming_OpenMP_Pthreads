@@ -11,6 +11,6 @@ void * culc_sum(void *);
 // variable while using locks to avoid race conditions.
 void work_array(int, int, int *, bool);
 
-void handle_sigint_array(void);
+void handle_sigint_array(int);
 
 #endif // WORK_ARRAY_H

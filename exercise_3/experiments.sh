@@ -1,24 +1,24 @@
 #!/bin/bash
 
-# Μεταγλώττιση
+# Compile the code
 make
 
-# Καθαρισμός φακέλου plots
+# Remove the existing 'plots' directory
 rm -rf plots
 
-# Εκτελέσιμο πρόγραμμα
+# Path to the executable
 EXEC=./src/my_program
 
 OUTFILE="results.csv"
 
+# Write CSV header
 echo "lock,threads,iterations,time" > "$OUTFILE"
 echo
 
-# Βρόχος για n = 10^4 έως 10^5
+# Loop over iteration counts from 100,000,000 to 500,000,000 in steps of 100,000,000
 for ((n=100000000; n<=500000000; n+=100000000)); do
-    # Σειριακή εκτέλεση (1 thread)
 
-    # Παράλληλη εκτέλεση
+    # Parallel execution with different thread counts
     for threads in 2 4 6 8; do
         echo "Running parallel iterations=$n threads=$threads"
         line=$($EXEC -i $n -t $threads)
@@ -26,6 +26,9 @@ for ((n=100000000; n<=500000000; n+=100000000)); do
     done
 done
 
+# Generate plots from the CSV results
 python3 plot_results.py "$OUTFILE"
 
+# Clean up build artifacts
 make clean
+
