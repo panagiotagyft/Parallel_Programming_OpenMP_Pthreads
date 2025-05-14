@@ -37,7 +37,8 @@ void *culc_sum_atomic(void *arg)
 void atomic_operations(int thread_count, int iterations, int var)
 {
 
-    double total_time, start, end;
+    double total_time;
+    struct timespec start, end;
     intptr_t iters;
 
     // Register signal handler for cleanup
@@ -61,7 +62,7 @@ void atomic_operations(int thread_count, int iterations, int var)
         exit(EXIT_FAILURE);
     }
 
-    start = ((double)clock()) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &start);
 
     // Create threads
     for (long thread = 0; thread < thread_count; thread++)
@@ -89,9 +90,9 @@ void atomic_operations(int thread_count, int iterations, int var)
         pthread_join(worker_threads[i], NULL);
     }
 
-    end = ((double)clock()) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    total_time = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
 
-    total_time = end - start;
     printf("Atomic,%d,%d,%.6f\n", thread_count, iterations, total_time);
 
     // Free memory and destroy mutex
