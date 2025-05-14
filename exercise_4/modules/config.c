@@ -53,11 +53,11 @@ void config(int argc, char *argv[], int *iterations, int *thread_count)
         }
         // printf("Available logical cores: %ld\n", nprocs);
 
-        if (*thread_count <= 1 || *thread_count > nprocs)
-        {
-            dprintf(STDOUT_FILENO,"Num of threads must be greater than 1 and smaller than or equal to %ld.\n",nprocs);
-            exit(EXIT_FAILURE);
-        }
+        // if (*thread_count <= 1 || *thread_count > nprocs)
+        // {
+        //     dprintf(STDOUT_FILENO,"Num of threads must be greater than 1 and smaller than or equal to %ld.\n",nprocs);
+        //     exit(EXIT_FAILURE);
+        // }
     }
 }
 
