@@ -5,6 +5,7 @@
 
 void pthread_barrier(int, int);
 
+// Each thread waits on the barrier for a given number of iterations
 void *test_barrier_pthread(void *);
 
 void handle_sigint_barrierPthread(int);

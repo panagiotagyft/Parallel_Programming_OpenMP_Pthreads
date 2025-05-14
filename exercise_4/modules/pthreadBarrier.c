@@ -31,6 +31,7 @@ void *test_barrier_pthread(void *rank)
     (void)rank;
     for (long i = 0; i < iterations; i++)
     {
+        // Wait until all threads have reached this point
         pthread_barrier_wait(&barrier);
     }
     pthread_exit(NULL);
@@ -38,7 +39,8 @@ void *test_barrier_pthread(void *rank)
 
 void pthread_barrier(int threads, int num_of_iterations)
 {
-    double total_time, start, end;
+    double total_time;
+    struct timespec start, end;
     thread_count = threads;
     iterations = num_of_iterations;
 
@@ -51,13 +53,14 @@ void pthread_barrier(int threads, int num_of_iterations)
         exit(EXIT_FAILURE);
     }
 
+    // Initialize the barrier for 'thread_count' threads
     if ((pthread_barrier_init(&barrier, NULL, thread_count)) != 0)
     {
         perror("Error initializing barrier\n");
         exit(EXIT_FAILURE);
     }
 
-    start = ((double)clock()) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &start);
 
     // Create threads
     for (long thread = 0; thread < thread_count; thread++)
@@ -75,9 +78,9 @@ void pthread_barrier(int threads, int num_of_iterations)
     {
         pthread_join(worker_threads[i], NULL);
     }
-    end = ((double)clock()) / CLOCKS_PER_SEC;
-
-    total_time = end - start;
+   
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    total_time = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
     printf("Pthread Barrier,%d,%d,%.6f\n", thread_count, iterations, total_time);
 
     // Free memory and destroy barrier

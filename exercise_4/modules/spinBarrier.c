@@ -9,11 +9,10 @@
 #include "spinBarrier.h"
 
 
-int thread_count;
-int iterations;
-int barrier_count = 0;
+int thread_count, iterations;
+int barrier_count = 0, flag = 0;
 pthread_mutex_t barrier_mutex_s = PTHREAD_MUTEX_INITIALIZER;
-int flag = 0;
+
 
 pthread_t *worker_threads_s = NULL;
 
@@ -35,17 +34,21 @@ void *test_sense_reversal_centralized_barrier(void *rank)
     for (long i = 0; i < iterations; i++)
     {
         local_sense = !local_sense; // toggle sense
+
+        // Enter critical section to update barrier_count
         pthread_mutex_lock(&barrier_mutex_s);
         barrier_count++;
+
+        // If this is the last thread to enter barrier
         if (barrier_count == thread_count)
         {
-            pthread_mutex_unlock(&barrier_mutex_s);
-            barrier_count = 0;
+            pthread_mutex_unlock(&barrier_mutex_s); // unlock mutex before resetting
+            barrier_count = 0;  // reset counter for next iteration
             flag = local_sense; // release waiting threads
         }
         else
         {
-            pthread_mutex_unlock(&barrier_mutex_s);
+            pthread_mutex_unlock(&barrier_mutex_s); // unlock mutex and wait for flag update
             while (flag != local_sense)
             {
                 ; // busy wait
@@ -57,7 +60,8 @@ void *test_sense_reversal_centralized_barrier(void *rank)
 
 void spin_barrier(int threads, int num_of_iterations)
 {
-    double total_time, start, end;
+    double total_time;
+    struct timespec start, end;
     thread_count = threads;
     iterations = num_of_iterations;
 
@@ -70,7 +74,7 @@ void spin_barrier(int threads, int num_of_iterations)
         exit(EXIT_FAILURE);
     }
 
-    start = ((double)clock()) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &start);
 
     // Create threads
     for (long thread = 0; thread < thread_count; thread++)
@@ -88,9 +92,10 @@ void spin_barrier(int threads, int num_of_iterations)
     {
         pthread_join(worker_threads_s[i], NULL);
     }
-    end = ((double)clock()) / CLOCKS_PER_SEC;
-
-    total_time = end - start;
+    
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    total_time = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+    
     printf("Centralized Barrier with Sense Reversal,%d,%d,%.6f\n", thread_count, iterations, total_time);
 
     // Free memory and destroy barrier
