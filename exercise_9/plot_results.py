@@ -4,8 +4,10 @@ import os
 import sys
 
 # Load the two CSV files
-df1 = pd.read_csv("../exercise_6/results.csv")  # π.χ. το φιλτραρισμένο παράλληλο
-df2 = pd.read_csv("results.csv")    # π.χ. μόνο σειριακό
+# df1 might refer to the parallel version using collapse(2)
+# df2 might refer to the serial or task-based version
+df1 = pd.read_csv("../exercise_6/results.csv") 
+df2 = pd.read_csv("results.csv")    
 
 output_dir = "plots"
 os.makedirs(output_dir, exist_ok=True)

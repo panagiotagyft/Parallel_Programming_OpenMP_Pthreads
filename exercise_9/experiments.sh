@@ -1,14 +1,11 @@
 #!/bin/bash
 
-# Μεταγλώττιση
 make
 
-# Καθαρισμός φακέλου plots
 rm -rf plots
 
-# Εκτελέσιμο πρόγραμμα
-EXEC=./src/my_program
 
+EXEC=./src/my_program
 OUTFILE="results.csv"
 
 # Check if exercise 6 results exist
@@ -30,18 +27,16 @@ echo "Running exercise 9..."
 echo "n,threads,generations,time" > "$OUTFILE"
 echo
 
-# Βρόχος για n = 10^4 έως 10^5
+
 for n in 64 1024 4096; do
-    # Σειριακή εκτέλεση (1 thread)
     
     echo "Running serial array_size=$n"
-    line=$($EXEC 1000 $n 0 1)
+    line=$($EXEC -g 1000 -gs $n -impl 0 -t 1)
     echo "$line" >> "$OUTFILE"
 
-    # Παράλληλη εκτέλεση
     for threads in 2 4 6 8; do
         echo "Running parallel grid_size=$n threads=$threads"
-        line=$($EXEC 1000 $n 1 $threads)
+        line=$($EXEC -g 1000 -gs $n -impl 1 -t $threads) 
         echo "$line" >> "$OUTFILE"
     done
 done

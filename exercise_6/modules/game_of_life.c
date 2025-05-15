@@ -1,3 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
+
+#ifdef _OPENMP
+#include <omp.h> // Include OpenMP for parallel execution
+#endif
+
 // Count the number of live neighbors of cell (i, j) in the grid
 int count_neighbors(int **grid, int n, int i, int j)
 {

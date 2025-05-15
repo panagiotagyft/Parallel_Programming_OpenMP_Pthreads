@@ -5,39 +5,53 @@
 #include <time.h>
 #include <math.h>
 #ifdef _OPENMP
-#include <omp.h>
+#include <omp.h> // Include OpenMP for parallel execution
 #endif
 
-    int
-    count_neighbors(int **grid, int n, int i, int j)
+// Count the number of live neighbors of cell (i, j) in the grid
+int count_neighbors(int **grid, int n, int i, int j)
 {
     int neighbors = 0;
 
-    // Corners
+    // Check each case based on the cell's position in the grid
+
+    // Top-left corner
     if (i == 0 && j == 0)
         neighbors = grid[i][j + 1] + grid[i + 1][j] + grid[i + 1][j + 1];
+
+    // Top-right corner
     else if (i == 0 && j == n - 1)
         neighbors = grid[i][j - 1] + grid[i + 1][j] + grid[i + 1][j - 1];
+
+    // Bottom-left corner
     else if (i == n - 1 && j == 0)
         neighbors = grid[i - 1][j] + grid[i - 1][j + 1] + grid[i][j + 1];
+
+    // Bottom-right corner
     else if (i == n - 1 && j == n - 1)
         neighbors = grid[i][j - 1] + grid[i - 1][j] + grid[i - 1][j - 1];
 
-    // Edges
+    // Top edge (excluding corners)
     else if (i == 0)
         neighbors = grid[i][j - 1] + grid[i][j + 1] +
                     grid[i + 1][j - 1] + grid[i + 1][j] + grid[i + 1][j + 1];
+
+    // Bottom edge (excluding corners)
     else if (i == n - 1)
         neighbors = grid[i][j - 1] + grid[i][j + 1] +
                     grid[i - 1][j - 1] + grid[i - 1][j] + grid[i - 1][j + 1];
+
+    // Left edge (excluding corners)
     else if (j == 0)
         neighbors = grid[i - 1][j] + grid[i + 1][j] +
                     grid[i - 1][j + 1] + grid[i][j + 1] + grid[i + 1][j + 1];
+
+    // Right edge (excluding corners)
     else if (j == n - 1)
         neighbors = grid[i - 1][j] + grid[i + 1][j] +
                     grid[i - 1][j - 1] + grid[i][j - 1] + grid[i + 1][j - 1];
 
-    // Inner cells
+    // Internal cell (not on edge or corner)
     else
         neighbors = grid[i - 1][j - 1] + grid[i - 1][j] + grid[i - 1][j + 1] +
                     grid[i][j - 1] + grid[i][j + 1] +
@@ -46,14 +60,15 @@
     return neighbors;
 }
 
+// Randomly initialize the grid with live cells
 void gameInitialization(int n, int **grid, int **next_grid)
 {
-    int live_cells = n + rand() % (n * n - n + 1);
+    int live_cells = n + rand() % (n * n - n + 1); // Random number of initial live cells
     for (int cell = 0; cell < live_cells;)
     {
         int i = rand() % n;
         int j = rand() % n;
-        if (grid[i][j] == 0)
+        if (grid[i][j] == 0) // Place a live cell if the position is empty
         {
             grid[i][j] = 1;
             next_grid[i][j] = 1;
@@ -62,6 +77,7 @@ void gameInitialization(int n, int **grid, int **next_grid)
     }
 }
 
+// Serial implementation of the Game of Life
 void serial_game_of_life(int generations, int n, int **grid, int **next_grid)
 {
     int neighbors;
@@ -74,33 +90,32 @@ void serial_game_of_life(int generations, int n, int **grid, int **next_grid)
             {
                 neighbors = count_neighbors(grid, n, i, j);
 
-                // Game of Life rules
+                // Apply Conway's Game of Life rules
                 if (grid[i][j] == 1 && (neighbors < 2 || neighbors > 3))
-                    next_grid[i][j] = 0;
+                    next_grid[i][j] = 0; // Dies due to under/overpopulation
                 else if (grid[i][j] == 0 && neighbors == 3)
-                    next_grid[i][j] = 1;
+                    next_grid[i][j] = 1; // Becomes alive due to reproduction
                 else
-                    next_grid[i][j] = grid[i][j]; // remains the same
+                    next_grid[i][j] = grid[i][j]; // State remains unchanged
             }
         }
 
-        // Copy next_grid to grid
+        // Copy updated grid to the current grid
         for (int i = 0; i < n; i++)
             memcpy(grid[i], next_grid[i], n * sizeof(int));
     }
 }
 
+// Parallel implementation using OpenMP tasks
 void parallel_game_of_life(int generations, int n, int **grid, int **next_grid)
 {
-    // 1) Επιλογή πόσους tiles θέλουμε ανά διάσταση:
-    //    Για παράδειγμα 2–4 φορές πάνω από τα νήματα:
-    int tiles_per_dim = n/16;
+    // 1) Choose number of tiles per dimension
+    int chunks_per_dim = n / 16;
 
-    // 2) Από το n και τα tiles_per_dim, βγάζουμε το chunk_size:
-    int chunk_size = (n + tiles_per_dim - 1) / tiles_per_dim;
-    //   (στρογγυλοποίηση προς τα πάνω για να καλύψουμε όλο το πλέγμα)
+    // 2) Compute chunk size based on tile count
+    int chunk_size = (n + chunks_per_dim - 1) / chunks_per_dim;
 
-    // 3) Threshold ως κλάσμα του chunk_size²:
+    // 3) Define a threshold to avoid creating tasks for very small chunks
     int THRESHOLD = (chunk_size / 2) * (chunk_size / 2);
 
     for (int gen = 0; gen < generations; gen++)
@@ -113,13 +128,11 @@ void parallel_game_of_life(int generations, int n, int **grid, int **next_grid)
                 {
                     for (int col_start = 0; col_start < n; col_start += chunk_size)
                     {
-                        int row_end = (row_start + chunk_size < n
-                                           ? row_start + chunk_size
-                                           : n);
-                        int col_end = (col_start + chunk_size < n
-                                           ? col_start + chunk_size
-                                           : n);
+                        // Calculate chunk boundaries
+                        int row_end = (row_start + chunk_size < n ? row_start + chunk_size : n);
+                        int col_end = (col_start + chunk_size < n ? col_start + chunk_size : n);
 
+                        // Create an OpenMP task for this chunk if large enough
 #pragma omp task firstprivate(row_start, col_start, row_end, col_end) if ((row_end - row_start) * (col_end - col_start) > THRESHOLD)
                         {
                             for (int i = row_start; i < row_end; ++i)
@@ -136,15 +149,14 @@ void parallel_game_of_life(int generations, int n, int **grid, int **next_grid)
                                 }
                             }
                         }
-                        // Αν το chunk πιο μικρό απ’ το THRESHOLD,
-                        // τρέχει inline χωρίς δημιουργία task
+                        // If the chunk is small, it runs in-line without creating a new task
                     }
                 }
-#pragma omp taskwait
+#pragma omp taskwait // Wait for all tasks to complete before proceeding
             }
         }
 
-// Αντιγραφή next_grid → grid με parallel for
+        // Copy next_grid to grid in parallel
 #pragma omp parallel for
         for (int i = 0; i < n; i++)
         {
