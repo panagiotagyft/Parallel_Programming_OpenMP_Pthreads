@@ -17,13 +17,13 @@ echo "n,threads,generations,time" > "$OUTFILE"  # CSV header
 for n in 64 1024 4096; do
     # Serial execution with 1 thread
     echo "Running serial array_size=$n"
-    line=$($EXEC 1000 $n 0 1)  # Run with is_parallel=0 and 1 thread
+    line=$($EXEC -g 1000 -gs $n -impl 0 -t 1)  # Run with is_parallel=0 and 1 thread
     echo "$line" >> "$OUTFILE"
 
     # Parallel execution with multiple thread counts
     for threads in 2 4 6 8; do
         echo "Running parallel grid_size=$n threads=$threads"
-        line=$($EXEC 1000 $n 1 $threads)  # Run with is_parallel=1
+        line=$($EXEC -g 1000 -gs $n -impl 1 -t $threads)  # Run with is_parallel=1
         echo "$line" >> "$OUTFILE"
     done
 done

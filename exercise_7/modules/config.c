@@ -9,29 +9,55 @@
 // Function to configure program parameters based on command-line arguments
 void config(int argc, char *argv[], int *parallel_impl, int *row_or_col, int *thread_count, long int *n)
 {
-    if (argc < 5)
+    if (argc < 9)
     {
         write(STDOUT_FILENO, "Missing arguments...\n", 21);
         exit(EXIT_FAILURE);
     }
-    else if (argc > 5)
+    else if (argc > 9)
     {
         write(STDOUT_FILENO, "Too many arguments...\n", 22);
         exit(EXIT_FAILURE);
     }
     else
     {
-        if (!isnumber(argv[1]) || !isnumber(argv[2]) || !isnumber(argv[3]) || !isnumber(argv[4]))
+        if (strcmp(argv[1], "-d") > 0)
+        {
+            printf("Incorrect argument: %s .The correct argument is: -g (generations)\n", argv[1]);
+            exit(EXIT_FAILURE);
+        }
+        if (strcmp(argv[3], "-sp") > 0)
+        {
+            printf("Incorrect argument: %s .The correct argument is: -gs (grid size)\n", argv[3]);
+            exit(EXIT_FAILURE);
+        }
+        if (strcmp(argv[5], "-rc") > 0)
+        {
+            printf("Incorrect argument: %s .The correct argument is: -impl (parallel implementation true/false)\n", argv[1]);
+            exit(EXIT_FAILURE);
+        }
+        if (strcmp(argv[7], "-t") > 0)
+        {
+            printf("Incorrect argument: %s .The correct argument is: -t (threads)\n", argv[3]);
+            exit(EXIT_FAILURE);
+        }
+        if (!isnumber(argv[2]) || !isnumber(argv[4]) || !isnumber(argv[6]) || !isnumber(argv[8]))
+        {
+            write(STDOUT_FILENO, "Arguments must be positive integers!!\n", 38);
+            exit(EXIT_FAILURE);
+        }
+  
+        if (!isnumber(argv[2]) || !isnumber(argv[4]) || !isnumber(argv[6]) || !isnumber(argv[8]))
         {
             write(STDOUT_FILENO, "Arguments must be positive integers!!\n", 38);
             exit(EXIT_FAILURE);
         }
 
         // Convert string arguments to integers
-        *n = atoi(argv[1]);
-        *parallel_impl = atoi(argv[2]);
-        *row_or_col = atoi(argv[3]);
-        *thread_count = atoi(argv[4]);
+        *n = atoi(argv[2]);
+        *parallel_impl = atoi(argv[4]);
+        *row_or_col = atoi(argv[6]);
+        *thread_count = atoi(argv[8]);
 
         // Check for valid parallel implementation value
         if (*parallel_impl != 0 && *parallel_impl != 1)

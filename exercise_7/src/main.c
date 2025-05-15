@@ -26,11 +26,6 @@ int main(int argc, char *argv[])
     // Read configuration from command-line arguments
     config(argc, argv, &parallel_impl, &row_or_col, &thread_count, &n);
     
-    // printf("%d\n", parallel_impl);
-    // printf("%d\n", row_or_col);
-    // printf("%d\n", thread_count);
-    // printf("%ld\n", n);
-
     // Allocate memory for matrix A and vectors b, x
     A = calloc(n, sizeof(double *));
     b = calloc(n, sizeof(double));
@@ -61,21 +56,6 @@ int main(int argc, char *argv[])
     // Initialize A as an upper triangular matrix and vector b with random values
     initialize_system(A, b, n);
 
-    // for (int i = 0; i < n; i++)
-    // {
-    //     for (int j = 0; j < n; j++)
-    //     {
-    //         printf("%f\t", A[i][j]);
-    //     }
-    //     printf("\n");
-    // }
-    // printf("\n");
-    // for (int j = 0; j < n; j++)
-    // {
-    //     printf("%f\t", b[j]);
-    // }
-    // printf("\n");
-
     if(parallel_impl == 0)
     { // Serial execution
 
@@ -89,7 +69,6 @@ int main(int argc, char *argv[])
         total_time = end - start;
         printf("%ld,serial,%s,%f\n", n, row_or_col == 0 ? "row wise" : "column wise", total_time);
 
-        // printf("Serial process takes %f seconds to execute\n", total_time);
     }
     else
     { // Parallel execution
@@ -104,7 +83,6 @@ int main(int argc, char *argv[])
         total_time = end - start;
 
         printf("%ld,%d,%s,%f\n", n, thread_count, row_or_col == 0 ? "row wise" : "column wise", total_time);
-        // printf("Parallel process takes %f seconds to execute\n", total_time);
     }
 
     for (j = 0; j < n; j++)
