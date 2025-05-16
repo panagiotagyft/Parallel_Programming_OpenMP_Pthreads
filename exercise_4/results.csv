@@ -1,0 +1,121 @@
+barrier,threads,iterations,time
+Pthread Barrier,2,100000,3.113428
+Barrier Condition Variables, 2, 100000,3.845008
+Centralized Barrier with Sense Reversal,2,100000,0.033817
+Pthread Barrier,4,100000,8.427310
+Barrier Condition Variables, 4, 100000,12.007817
+Centralized Barrier with Sense Reversal,4,100000,0.116899
+Pthread Barrier,6,100000,12.848082
+Barrier Condition Variables, 6, 100000,20.649289
+Centralized Barrier with Sense Reversal,6,100000,0.778941
+Pthread Barrier,8,100000,17.371794
+Barrier Condition Variables, 8, 100000,30.290004
+Centralized Barrier with Sense Reversal,8,100000,1.770128
+Pthread Barrier,2,200000,5.631423
+Barrier Condition Variables, 2, 200000,7.143743
+Centralized Barrier with Sense Reversal,2,200000,0.071561
+Pthread Barrier,4,200000,17.133001
+Barrier Condition Variables, 4, 200000,24.252607
+Centralized Barrier with Sense Reversal,4,200000,0.202793
+Pthread Barrier,6,200000,26.902658
+Barrier Condition Variables, 6, 200000,40.427528
+Centralized Barrier with Sense Reversal,6,200000,1.404718
+Pthread Barrier,8,200000,35.764339
+Barrier Condition Variables, 8, 200000,56.798581
+Centralized Barrier with Sense Reversal,8,200000,3.159370
+Pthread Barrier,2,300000,7.644326
+Barrier Condition Variables, 2, 300000,10.773724
+Centralized Barrier with Sense Reversal,2,300000,0.076744
+Pthread Barrier,4,300000,26.221235
+Barrier Condition Variables, 4, 300000,36.727616
+Centralized Barrier with Sense Reversal,4,300000,0.331492
+Pthread Barrier,6,300000,38.809998
+Barrier Condition Variables, 6, 300000,60.464693
+Centralized Barrier with Sense Reversal,6,300000,2.082050
+Pthread Barrier,8,300000,54.520424
+Barrier Condition Variables, 8, 300000,87.127329
+Centralized Barrier with Sense Reversal,8,300000,5.021166
+Pthread Barrier,2,400000,10.616793
+Barrier Condition Variables, 2, 400000,14.516678
+Centralized Barrier with Sense Reversal,2,400000,0.114335
+Pthread Barrier,4,400000,32.378831
+Barrier Condition Variables, 4, 400000,50.331652
+Centralized Barrier with Sense Reversal,4,400000,0.575211
+Pthread Barrier,6,400000,53.881677
+Barrier Condition Variables, 6, 400000,84.170526
+Centralized Barrier with Sense Reversal,6,400000,2.884839
+Pthread Barrier,8,400000,72.398807
+Barrier Condition Variables, 8, 400000,116.142685
+Centralized Barrier with Sense Reversal,8,400000,5.504686
+Pthread Barrier,2,500000,13.631513
+Barrier Condition Variables, 2, 500000,17.598789
+Centralized Barrier with Sense Reversal,2,500000,0.167211
+Pthread Barrier,4,500000,40.616384
+Barrier Condition Variables, 4, 500000,61.947611
+Centralized Barrier with Sense Reversal,4,500000,0.816580
+Pthread Barrier,6,500000,66.722624
+Barrier Condition Variables, 6, 500000,104.243714
+Centralized Barrier with Sense Reversal,6,500000,3.621668
+Pthread Barrier,8,500000,90.705343
+Barrier Condition Variables, 8, 500000,145.478700
+Centralized Barrier with Sense Reversal,8,500000,7.782366
+Pthread Barrier,2,600000,16.292364
+Barrier Condition Variables, 2, 600000,22.109533
+Centralized Barrier with Sense Reversal,2,600000,0.213073
+Pthread Barrier,4,600000,59.413021
+Barrier Condition Variables, 4, 600000,89.325938
+Centralized Barrier with Sense Reversal,4,600000,1.115829
+Pthread Barrier,6,600000,86.434335
+Barrier Condition Variables, 6, 600000,127.180014
+Centralized Barrier with Sense Reversal,6,600000,4.230122
+Pthread Barrier,8,600000,109.004232
+Barrier Condition Variables, 8, 600000,195.039299
+Centralized Barrier with Sense Reversal,8,600000,25.913591
+Pthread Barrier,2,700000,20.068794
+Barrier Condition Variables, 2, 700000,25.622360
+Centralized Barrier with Sense Reversal,2,700000,0.246417
+Pthread Barrier,4,700000,64.967299
+Barrier Condition Variables, 4, 700000,93.667078
+Centralized Barrier with Sense Reversal,4,700000,0.989282
+Pthread Barrier,6,700000,92.851288
+Barrier Condition Variables, 6, 700000,146.662286
+Centralized Barrier with Sense Reversal,6,700000,5.035205
+Pthread Barrier,8,700000,134.529317
+Barrier Condition Variables, 8, 700000,218.168348
+Centralized Barrier with Sense Reversal,8,700000,10.828723
+Pthread Barrier,2,800000,20.946611
+Barrier Condition Variables, 2, 800000,28.248583
+Centralized Barrier with Sense Reversal,2,800000,0.153181
+Pthread Barrier,4,800000,72.667736
+Barrier Condition Variables, 4, 800000,112.839645
+Centralized Barrier with Sense Reversal,4,800000,1.962664
+Pthread Barrier,6,800000,117.080654
+Barrier Condition Variables, 6, 800000,182.151253
+Centralized Barrier with Sense Reversal,6,800000,5.988022
+Pthread Barrier,8,800000,163.979136
+Barrier Condition Variables, 8, 800000,278.471002
+Centralized Barrier with Sense Reversal,8,800000,20.716812
+Pthread Barrier,2,900000,28.435069
+Barrier Condition Variables, 2, 900000,36.692576
+Centralized Barrier with Sense Reversal,2,900000,0.374864
+Pthread Barrier,4,900000,86.365279
+Barrier Condition Variables, 4, 900000,121.871332
+Centralized Barrier with Sense Reversal,4,900000,2.728141
+Pthread Barrier,6,900000,128.306735
+Barrier Condition Variables, 6, 900000,199.671625
+Centralized Barrier with Sense Reversal,6,900000,9.283266
+Pthread Barrier,8,900000,163.229030
+Barrier Condition Variables, 8, 900000,284.070835
+Centralized Barrier with Sense Reversal,8,900000,17.918817
+Pthread Barrier,2,1000000,31.222275
+Barrier Condition Variables, 2, 1000000,41.915930
+Centralized Barrier with Sense Reversal,2,1000000,0.246601
+Pthread Barrier,4,1000000,91.234388
+Barrier Condition Variables, 4, 1000000,134.540688
+Centralized Barrier with Sense Reversal,4,1000000,1.555464
+Pthread Barrier,6,1000000,133.459261
+Barrier Condition Variables, 6, 1000000,216.868007
+Centralized Barrier with Sense Reversal,6,1000000,8.499999
+Pthread Barrier,8,1000000,184.349396
+Barrier Condition Variables, 8, 1000000,321.742354
+Centralized Barrier with Sense Reversal,8,1000000,28.807448

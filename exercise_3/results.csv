@@ -1,0 +1,41 @@
+lock,threads,iterations,time
+Without Optimization,2,100000000,0.730920
+Optimization,2,100000000,0.130241
+Without Optimization,4,100000000,0.879756
+Optimization,4,100000000,0.078131
+Without Optimization,6,100000000,0.829786
+Optimization,6,100000000,0.045813
+Without Optimization,8,100000000,0.810584
+Optimization,8,100000000,0.040513
+Without Optimization,2,200000000,1.494882
+Optimization,2,200000000,0.261197
+Without Optimization,4,200000000,1.768266
+Optimization,4,200000000,0.133694
+Without Optimization,6,200000000,1.660713
+Optimization,6,200000000,0.103943
+Without Optimization,8,200000000,1.624579
+Optimization,8,200000000,0.105088
+Without Optimization,2,300000000,2.126891
+Optimization,2,300000000,0.390136
+Without Optimization,4,300000000,2.508507
+Optimization,4,300000000,0.257897
+Without Optimization,6,300000000,2.550641
+Optimization,6,300000000,0.159945
+Without Optimization,8,300000000,2.450654
+Optimization,8,300000000,0.117736
+Without Optimization,2,400000000,3.036809
+Optimization,2,400000000,0.508912
+Without Optimization,4,400000000,3.522784
+Optimization,4,400000000,0.273463
+Without Optimization,6,400000000,3.316865
+Optimization,6,400000000,0.188133
+Without Optimization,8,400000000,3.146454
+Optimization,8,400000000,0.158357
+Without Optimization,2,500000000,3.360746
+Optimization,2,500000000,0.658467
+Without Optimization,4,500000000,4.444842
+Optimization,4,500000000,0.343910
+Without Optimization,6,500000000,4.269447
+Optimization,6,500000000,0.308165
+Without Optimization,8,500000000,4.278586
+Optimization,8,500000000,0.265718

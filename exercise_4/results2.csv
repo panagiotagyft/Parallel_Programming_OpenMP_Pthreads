@@ -1,0 +1,4 @@
+barrier,threads,iterations,time
+Pthread Barrier,2,100000,1.867961
+Barrier Condition Variables, 2, 100000,1.621126
+Centralized Barrier with Sense Reversal,2,100000,0.677943
