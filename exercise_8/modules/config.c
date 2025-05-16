@@ -9,28 +9,49 @@
 // Function to configure program parameters based on command-line arguments
 void config(int argc, char *argv[], long long int *array_size, int *parallel_impl, int *thread_count)
 {
-    if (argc < 4)
+    if (argc < 7)
     {
         write(STDOUT_FILENO, "Missing arguments...\n", 21);
         exit(EXIT_FAILURE);
     }
-    else if (argc > 4)
+    else if (argc > 7)
     {
         write(STDOUT_FILENO, "Too many arguments...\n", 22);
         exit(EXIT_FAILURE);
     }
     else
     {
-        if (!isnumber(argv[1]) || !isnumber(argv[2]) || !isnumber(argv[3]))
+        if (strcmp(argv[1], "-s") > 0)
+        {
+            printf("Incorrect argument: %s .The correct argument is: -g (generations)\n", argv[1]);
+            exit(EXIT_FAILURE);
+        }
+        if (strcmp(argv[3], "-sp") > 0)
+        {
+            printf("Incorrect argument: %s .The correct argument is: -gs (grid size)\n", argv[3]);
+            exit(EXIT_FAILURE);
+        }
+        if (strcmp(argv[5], "-t") > 0)
+        {
+            printf("Incorrect argument: %s .The correct argument is: -t (threads)\n", argv[3]);
+            exit(EXIT_FAILURE);
+        }
+        if (!isnumber(argv[2]) || !isnumber(argv[4]) || !isnumber(argv[6]))
+        {
+            write(STDOUT_FILENO, "Arguments must be positive integers!!\n", 38);
+            exit(EXIT_FAILURE);
+        }
+
+        if (!isnumber(argv[2]) || !isnumber(argv[4]) || !isnumber(argv[6]))
         {
             write(STDOUT_FILENO, "Arguments must be positive integers!!\n", 38);
             exit(EXIT_FAILURE);
         }
 
         // Convert string arguments to integers
-        *array_size = atoi(argv[1]);
-        *parallel_impl = atoi(argv[2]);
-        *thread_count = atoi(argv[3]);
+        *array_size = atoi(argv[2]);
+        *parallel_impl = atoi(argv[4]);
+        *thread_count = atoi(argv[6]);
 
         // Check for valid parallel implementation value
         if (*parallel_impl != 0 && *parallel_impl != 1)

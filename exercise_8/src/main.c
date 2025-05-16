@@ -12,15 +12,6 @@
 #include <omp.h>
 #endif
 
-// // Function to print an array
-// void printArray(int A[], int size)
-// {
-//     int i;
-//     for (i = 0; i < 100000; i++)
-//         printf("%d ", A[i]);
-//     printf("\n");
-// }
-
 
 int main(int argc, char *argv[])
 {

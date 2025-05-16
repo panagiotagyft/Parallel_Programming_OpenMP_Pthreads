@@ -7,13 +7,11 @@ filename = sys.argv[1]
 output_dir = "plots"
 os.makedirs(output_dir, exist_ok=True)
 
-# Φόρτωση δεδομένων
 df = pd.read_csv(filename)
-df['threads'] = df['threads'].astype(str)  # για να περιλαμβάνει "serial" ως label
+df['threads'] = df['threads'].astype(str) 
 
 plt.figure()
 
-# Ομαδοποίηση ανά αριθμό νημάτων (ή serial)
 for threads in sorted(df['threads'].unique(), key=lambda x: int(x) if x.isdigit() else -1):
     group = df[df['threads'] == threads]
     plt.plot(group['n'], group['time'], marker='o', label=f"{threads} threads" if threads != "serial" else "serial")
