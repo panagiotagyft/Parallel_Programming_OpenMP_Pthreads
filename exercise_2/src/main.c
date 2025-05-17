@@ -14,10 +14,11 @@ int main(int argc, char *argv[])
 
     config(argc, argv, &iterations, &thread_count);
 
-    // printf(">>> Starting mutual_exclution...\n");
-    mutual_exclution(thread_count, iterations, 0);
-    // printf(">>> Starting atomic_operations...\n");
-    atomic_operations(thread_count, iterations, 0);
+    val = mutual_exclution(thread_count, iterations, 0);
+
+    val = atomic_operations(thread_count, iterations, 0);
+
+    // printf("val: %d\n", val);
 
     return EXIT_SUCCESS;
 }

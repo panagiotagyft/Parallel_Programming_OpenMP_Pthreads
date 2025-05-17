@@ -46,7 +46,7 @@ void *culc_sum(void *arg)
     pthread_exit(NULL);
 }
 
-void mutual_exclution(int thread_count, int iterations, int var)
+int mutual_exclution(int thread_count, int iterations, int var)
 {
     double total_time;
     struct timespec start, end;
@@ -106,4 +106,5 @@ void mutual_exclution(int thread_count, int iterations, int var)
     free(worker_threads);
     pthread_mutex_destroy(&Mutex);
 
+    return shared_var;
 }

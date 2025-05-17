@@ -34,7 +34,7 @@ void *culc_sum_atomic(void *arg)
     pthread_exit(NULL);
 }
 
-void atomic_operations(int thread_count, int iterations, int var)
+int atomic_operations(int thread_count, int iterations, int var)
 {
 
     double total_time;
@@ -97,4 +97,6 @@ void atomic_operations(int thread_count, int iterations, int var)
 
     // Free memory and destroy mutex
     free(worker_threads);
+
+    return shared_var;
 }

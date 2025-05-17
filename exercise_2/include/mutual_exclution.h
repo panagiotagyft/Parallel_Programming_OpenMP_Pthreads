@@ -8,7 +8,7 @@ void * culc_sum(void *);
 
 // This function spawns threads, each of which increments a shared
 // variable while using locks to avoid race conditions.
-void mutual_exclution(int, int, int);
+int mutual_exclution(int, int, int);
 
 void handle_sigint_mutex(int);
 

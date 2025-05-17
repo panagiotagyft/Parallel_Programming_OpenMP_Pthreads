@@ -5,7 +5,7 @@
 
 // This function spawns threads, each of which increments a shared
 // variable while using locks to avoid race conditions.
-void atomic_operations(int, int, int);
+int atomic_operations(int, int, int);
 
 void *culc_sum_atomic(void *arg);
 
