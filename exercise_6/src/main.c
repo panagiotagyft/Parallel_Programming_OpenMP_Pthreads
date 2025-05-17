@@ -48,6 +48,9 @@ int main(int argc, char *argv[])
         // Parallel execution using OpenMP
         start = omp_get_wtime();
 
+        // Set the number of threads for the OpenMP parallel region
+        omp_set_num_threads(thread_count);
+
         parallel_game_of_life(generations, n, grid, next_grid);
 
         end = omp_get_wtime();

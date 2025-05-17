@@ -53,11 +53,10 @@ void Get_args(int argc, char *argv[], int *thread_count_p, int *m_p, int *n_p, i
    // Default: use upper triangular optimization
    *use_upper = 1;
 
-   // Αν υπάρχει 5ο όρισμα και είναι "full", απενεργοποιούμε την upper optimization
+   // If a fifth argument is provided and it is "full", we disable the upper optimization.
    if (argc == 5 && strcmp(argv[4], "full") == 0)
       *use_upper = 0;
 
-   // Δεκτό μόνο αν έχουμε 4 ή 5 ορίσματα
    if (argc != 4 && argc != 5)
       Usage(argv[0]);
 
