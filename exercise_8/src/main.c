@@ -63,5 +63,21 @@ int main(int argc, char *argv[])
         // printf("Serial process takes %f seconds to execute\n", total_time);
     }
 
+    // Check if the array is sorted
+    bool sorted = true;
+    for (int i = 1; i < array_size; i++)
+    {
+        if (array[i - 1] > array[i])
+        {
+            sorted = false;
+            break;
+        }
+    }
+
+    // if (sorted)
+    //     printf("The array is sorted.\n");
+    // else
+    //     printf("The array is NOT sorted!\n");
+
     return EXIT_SUCCESS;
 }
