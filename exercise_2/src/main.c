@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-    int thread_count, iterations;
+    int thread_count, iterations, val;
 
     config(argc, argv, &iterations, &thread_count);
 
