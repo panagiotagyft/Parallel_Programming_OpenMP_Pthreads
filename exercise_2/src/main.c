@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 
     val = atomic_operations(thread_count, iterations, 0);
 
+    (void)val;
     // printf("val: %d\n", val);
 
     return EXIT_SUCCESS;
