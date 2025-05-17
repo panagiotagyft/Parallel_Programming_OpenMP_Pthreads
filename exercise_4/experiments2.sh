@@ -19,7 +19,7 @@ for threads in 2 4 6 8 10 12; do
     echo "Running parallel iterations=$n threads=$threads"
     # Execute the program with the given iteration count and threads,
     # capture its comma‐separated output line, and append it to the CSV
-    line=$($EXEC -i 100000 -t $threads)
+    line=$($EXEC -i 50000 -t $threads)
     echo "$line" >> "$OUTFILE"
 done
 
