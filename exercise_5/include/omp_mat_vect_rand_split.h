@@ -2,8 +2,8 @@
 #define OMP_MAT_VECT_RAND_SPLIT_H
 
 /* Serial functions */
-void Get_args(int argc, char* argv[], int* thread_count_p, 
-    int* m_p, int* n_p);
+void Get_args(int argc, char *argv[], int *thread_count_p,
+              int *m_p, int *n_p, int *use_upper);
 void Usage(char* prog_name);
 void Gen_matrix(double A[], int m, int n);
 void Read_matrix(char* prompt, double A[], int m, int n);

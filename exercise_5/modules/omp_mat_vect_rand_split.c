@@ -37,6 +37,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <omp.h>
 #include "timer.h"
 #include "omp_mat_vect_rand_split.h"
@@ -47,16 +48,26 @@
  * In args:   argc, argv
  * Out args:  thread_count_p, m_p, n_p
  */
-void Get_args(int argc, char* argv[], int* thread_count_p, 
-      int* m_p, int* n_p)  {
+void Get_args(int argc, char *argv[], int *thread_count_p, int *m_p, int *n_p, int *use_upper)
+{
+   // Default: use upper triangular optimization
+   *use_upper = 1;
 
-   if (argc != 4) Usage(argv[0]);
+   // Αν υπάρχει 5ο όρισμα και είναι "full", απενεργοποιούμε την upper optimization
+   if (argc == 5 && strcmp(argv[4], "full") == 0)
+      *use_upper = 0;
+
+   // Δεκτό μόνο αν έχουμε 4 ή 5 ορίσματα
+   if (argc != 4 && argc != 5)
+      Usage(argv[0]);
+
    *thread_count_p = strtol(argv[1], NULL, 10);
    *m_p = strtol(argv[2], NULL, 10);
    *n_p = strtol(argv[3], NULL, 10);
-   if (*thread_count_p <= 0 || *m_p <= 0 || *n_p <= 0) Usage(argv[0]);
 
-}  /* Get_args */
+   if (*thread_count_p <= 0 || *m_p <= 0 || *n_p <= 0)
+      Usage(argv[0]);
+}
 
 /*------------------------------------------------------------------
  * Function:  Usage
@@ -177,24 +188,6 @@ void Omp_mat_vect_full_matrix(double A[], double x[], double y[], int m, int n, 
    printf("%e\n", elapsed);
 
 }  /* Omp_mat_vect_1st */
-
-
-void Run_all_schedules(double A[], double x[], double y[], int m, int n, int thread_count) {
-   omp_sched_t kinds[] = {omp_sched_static, omp_sched_dynamic, omp_sched_guided};
-   const char* names[] = {"Static", "Dynamic", "Guided"};
-   int i, j;
-   
-   for (i = 0; i < 3; i++) {
-		for(j=1; j < 8; j+=3){
-	      omp_set_schedule(kinds[i], j);
-	
-	      printf("%d,Schedule,%s,%d,",thread_count, names[i], j);
-	
-	      Omp_mat_vect(A, x, y, m, n, thread_count);  // �� ��� �� schedule(runtime)
-		}
-   }
-}
-
 
 
 /*------------------------------------------------------------------

@@ -12,8 +12,9 @@ int main(int argc, char *argv[])
     double *A;
     double *x;
     double *y;
+    int use_upper = 1;
 
-    Get_args(argc, argv, &thread_count, &m, &n);
+    Get_args(argc, argv, &thread_count, &m, &n, &use_upper);
 
     A = malloc(m * n * sizeof(double));
     x = malloc(n * sizeof(double));
@@ -30,14 +31,11 @@ int main(int argc, char *argv[])
     Gen_vector(x, n);
 /* Print_vector("We generated", x, n); */
 #endif
-    //   printf("Baseline: full matrix-vector multiplication ")
 
-    printf("%d,Baseline,Full,,", thread_count);
-    Omp_mat_vect_full_matrix(A, x, y, m, n, thread_count);
-    //   printf("Baseline: multiplication with upper-triangular matrix ");
-    printf("%d,Baseline,Upper,,", thread_count);
-    Omp_mat_vect(A, x, y, m, n, thread_count);
-    Run_all_schedules(A, x, y, m, n, thread_count);
+    if (use_upper)
+        Omp_mat_vect(A, x, y, m, n, thread_count);
+    else
+        Omp_mat_vect_full_matrix(A, x, y, m, n, thread_count);
 #ifdef DEBUG
     Print_vector("The product is", y, m);
 #else
