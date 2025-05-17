@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-
+    (void)sorted;
     // if (sorted)
     //     printf("The array is sorted.\n");
     // else
