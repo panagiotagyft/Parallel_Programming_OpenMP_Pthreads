@@ -18,7 +18,6 @@ echo
 
 # Loop over problem sizes from 100,000 to 1,000,000 in steps of 100,000
 for ((n=100000; n<=1000000; n+=100000)); do
-    # (Optional) You could run the serial version here by setting threads=1
 
     # Run the parallel version with different thread counts
     for threads in 2 4 6 8; do
