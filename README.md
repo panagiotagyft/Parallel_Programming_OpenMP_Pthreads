@@ -8,25 +8,40 @@
   <h2>Spring Semester 2024–2025</h2>
 </div>
 
-## Contributing
-
 [Panagiota Gyftou - cs22400025](https://github.com/panagiotagyft) </br>
 gyftoupan@di.uoa.gr </br>
 
+## Project Structure
+
+<pre><code>
+📦exercise_1/ 
+├── 📂include/ 
+│ └── *.h   # Header files
+├── 📂modules/ 
+│ └── *.c   # Source code files 
+├── 📂src/ 
+│ ├── main.c 
+│ └── 📄Makefile
+├── 📄Makefile
+📦exercise_2/ 
+📦exercise_3/ 
+📦exercise_4/ 
+📦exercise_5/ 
+📦exercise_6/ 
+📦exercise_7/ 
+📦exercise_8/ 
+📦exercise_9/
+📄README.md
+📄Report_7115112400025.pdf </code></pre>
 ## Introduction - Problem
 
 This helper script automates building and running every exercise in the Parallel Computing Systems handout.
 It will compile the serial, Pthreads and OpenMP versions, execute each benchmark with your chosen parameters, and collect timing and output data.
-Simply invoke it once to compile all programs and run all experiments in sequence.
+
 
 # Test the program utility
 
 Run the following script to execute all the exercises!
-
-
-```bash
-./program.sh
-```
 
 **Also check for individual [program runs](#run-examples) and [ memory leaks](#valgrind)**
 
@@ -44,7 +59,7 @@ make
 ### 2. Run the Program
 
 If you [compiled](###-1.-Compile-the-Program) the files from the previous section you can run:</br>
-`$ ./myprogram *ARGS`
+`$ ./my_program *ARGS`
 
 \*[ARGS](#args)
 
@@ -81,7 +96,7 @@ make run ARGS="-i 100000000 -t 4"   # -i(iterations) -t(threads)
 make run ARGS="-i 100000000 -t 4"   # -i(iterations) -t(threads)
 
 # exercise 4
-make run ARGS="-i 100000000 -t 4"   # -i(iterations) -t(threads)
+make run ARGS="-i 1000000 -t 4"   # -i(iterations) -t(threads)
 
 # exercise 5
 make run ARGS="4 10000 10000"        # Default execution (threads) (m) (n)
